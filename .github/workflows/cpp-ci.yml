@@ -1,0 +1,28 @@
+name: C++ CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Check out the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up C++ build environment
+    - name: Set up GCC
+      uses: actions/setup-toolchain@v1
+      with:
+        toolchain: gcc
+
+    # Build the project
+    - name: Build hello_world.cpp
+      run: |
+        g++ hello_world.cpp -o hello_world
+        ./hello_world
+
