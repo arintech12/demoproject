@@ -7,32 +7,53 @@ on:
 
 jobs:
   build:
-    name: Build Stage
+    name: 🛠️ Build App
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Run build commands
+      - name: Create App Files
         run: |
-          echo "Running build stage..."
-          exit 1
-          # Add your actual build commands here
-          mkdir build
-          echo "Build complete" > build/status.txt
+          mkdir -p build
+          echo "<!DOCTYPE html>" > build/index.html
+          echo "<html><head><title>My App</title></head><body>" >> build/index.html
+          echo "<h1>Hello from the Build Stage!</h1>" >> build/index.html
+          echo "<p>Built on $(date)</p>" >> build/index.html
+          echo "</body></html>" >> build/index.html
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-app
+          path: build/
 
   deploy:
-    name: Deploy Stage
+    name: 🚀 Simulate Deployment
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: web-app
 
-      - name: Run deploy commands
+      - name: Print File Contents
         run: |
-          echo "Running deploy stage..."
-          # Add your actual deployment logic here
-          cat build/status.txt || echo "No build artifact found"
-          echo "Deployment complete"
+          echo "== index.html content =="
+          cat index.html
+
+      - name: Count Words in File
+        run: |
+          echo "== Word Count =="
+          wc -w index.html
+
+      - name: Check if Page Has Title
+        run: |
+          if grep -q "<title>" index.html; then
+            echo "✅ Page has a title tag."
+          else
+            echo "❌ No title tag found!"
+            exit 1
+          fi
