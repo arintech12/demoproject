@@ -19,7 +19,7 @@ jobs:
 
       # Step 3: Build the C++ code (compile main.cpp)
       - name: Build C++ code
-        run: g++ main.cpp -o hello-world
+        run: g++ hello_world.cpp -o hello-world
 
       # Step 4: Upload the build artifact (compiled binary)
       - name: Upload build artifact
