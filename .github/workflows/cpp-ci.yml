@@ -37,6 +37,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: hello-world-binary
+      
+      - name: Give executable permission
+        run: chmod +x hello-world
 
       # Step 2: Run the downloaded artifact to simulate deployment
       - name: Deploy hello-world binary
