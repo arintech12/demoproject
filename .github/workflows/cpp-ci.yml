@@ -3,54 +3,41 @@ name: C++ CI Workflow
 on:
   push:
     branches:
-      - mai
+      - main
 
 jobs:
   build:
-    name: 🏗️ Build App
     runs-on: ubuntu-latest
-
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create build output
-        run: |
-          mkdir -p build
-          echo "<!DOCTYPE html>" > build/index.html
-          echo "<html><head><title>My App</title></head><body>" >> build/index.html
-          echo "<h1>Hello from GitHub Actions 🚀</h1>" >> build/index.html
-          echo "<p>Build at $(date)</p>" >> build/index.html
-          echo "</body></html>" >> build/index.html
+      # Step 2: Set up C++ compiler (g++)
+      - name: Set up C++ compiler
+        run: sudo apt-get install g++
 
+      # Step 3: Build the C++ code (compile main.cpp)
+      - name: Build C++ code
+        run: g++ main.cpp -o hello-world
+
+      # Step 4: Upload the build artifact (compiled binary)
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: web-build
-          path: build/
+          name: hello-world-binary
+          path: hello-world
 
   deploy:
-    name: 🚀 Deploy Simulated
     runs-on: ubuntu-latest
-    needs: build
-
+    needs: build  # Make sure the build job is done before deploying
     steps:
+      # Step 1: Download the build artifact
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: web-build
+          name: hello-world-binary
 
-      - name: Show HTML contents
-        run: |
-          echo "=== index.html ==="
-          cat index.html
-
-      - name: Do something useful (e.g. QA check)
-        run: |
-          echo "Checking for <title> tag..."
-          if grep -q "<title>" index.html; then
-            echo "✅ Valid HTML file."
-          else
-            echo "❌ Missing title tag!"
-            exit 1
-          fi
+      # Step 2: Run the downloaded artifact to simulate deployment
+      - name: Deploy hello-world binary
+        run: ./hello-world
