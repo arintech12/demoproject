@@ -16,6 +16,7 @@ jobs:
       - name: Run build commands
         run: |
           echo "Running build stage..."
+          exit 1
           # Add your actual build commands here
           mkdir build
           echo "Build complete" > build/status.txt
