@@ -14,15 +14,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Set up C++ build environment
-    - name: Set up GCC
-      uses: actions/setup-toolchain@v1
-      with:
-        toolchain: gcc
+    # (Optional) Show GCC version
+    - name: Show GCC version
+      run: g++ --version
 
     # Build the project
     - name: Build hello_world.cpp
       run: |
         g++ hello_world.cpp -o hello_world
         ./hello_world
-
