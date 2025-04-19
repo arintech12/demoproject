@@ -3,7 +3,7 @@ name: C-helloworld Workflow
 on:
   push:
     branches:
-      - main
+      - staging
 
 jobs:
   build:
