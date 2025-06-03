@@ -1,9 +1,9 @@
-name: Parallel Pipelines
+name: Sequential Pipelines
 
 on:
   push:
     branches:
-      - staging
+      - main
 
 jobs:
   pipeline_one:
@@ -21,6 +21,7 @@ jobs:
 
   pipeline_two:
     name: Pipeline Two
+    needs: pipeline_one  # This enforces the sequence
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
