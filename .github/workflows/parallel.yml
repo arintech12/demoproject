@@ -1,34 +1,28 @@
-name: Sequential Pipelines
+name: Parallel Pipelines
 
 on:
   push:
     branches:
       - staging
 
+
 jobs:
   pipeline_one:
     name: Pipeline One
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Step 1 in Pipeline One
+        run: echo "Step 1 in Pipeline One"
 
-      - name: Run Pipeline One Tasks
-        run: |
-          echo "Running tasks for Pipeline One"
-          # Add your commands here
-          sleep 10
+      - name: Step 2 in Pipeline One
+        run: echo "Step 2 in Pipeline One"
 
   pipeline_two:
     name: Pipeline Two
-    needs: pipeline_one  # This enforces the sequence
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Step 1 in Pipeline Two
+        run: echo "Step 1 in Pipeline Two"
 
-      - name: Run Pipeline Two Tasks
-        run: |
-          echo "Running tasks for Pipeline Two"
-          # Add your commands here
-          sleep 10
+      - name: Step 2 in Pipeline Two
+        run: echo "Step 2 in Pipeline Two"
